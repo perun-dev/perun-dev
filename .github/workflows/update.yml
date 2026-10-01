@@ -1,0 +1,50 @@
+name: Update profile
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/generate.py
+      - .github/workflows/update.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-profile
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate neon cards
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          PROFILE_USER: ${{ github.repository_owner }}
+        run: python3 scripts/generate.py
+
+      - name: Generate snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          github_token: ${{ secrets.METRICS_TOKEN }}
+          outputs: |
+            assets/snake.svg?color_snake=#ff2bd6&color_dots=#161626,#0b4f5a,#0a8794,#00c4d6,#00f0ff
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets
+          if git diff --cached --quiet; then
+            echo "Нечего коммитить"
+          else
+            git commit -m "chore: update profile cards"
+            git push
+          fi
