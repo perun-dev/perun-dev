@@ -238,10 +238,6 @@ def render_languages(langs):
     biggest = max(p for _, p in items) or 1
 
     track_x, track_w, row_h = 170, 540, 42
-    style = """
-    @keyframes grow{from{transform:scaleX(0)}}
-    .bar{transform-box:fill-box;transform-origin:left center;animation:grow 1.1s cubic-bezier(.2,.7,.2,1) both}
-    """
     body = title("LANGUAGES")
     for i, (name, pct) in enumerate(items):
         y = 84 + i * row_h
@@ -250,12 +246,12 @@ def render_languages(langs):
         body += (
             f'<text x="28" y="{y + 5}" font-size="15" class="txt">{escape(name)}</text>'
             f'<rect x="{track_x}" y="{y - 7}" width="{track_w}" height="12" rx="6" fill="{TRACK}"/>'
-            f'<rect class="bar" style="animation-delay:{i * 0.12:.2f}s" x="{track_x}" y="{y - 7}" '
+            f'<rect x="{track_x}" y="{y - 7}" '
             f'width="{width:.1f}" height="12" rx="6" fill="{color}" filter="url(#glow)"/>'
             f'<text x="{WIDTH - 28}" y="{y + 5}" font-size="15" class="b" text-anchor="end" '
             f'fill="{color}">{pct:.1f}%</text>'
         )
-    return svg(WIDTH, 84 + len(items) * row_h, body, style)
+    return svg(WIDTH, 84 + len(items) * row_h, body)
 
 
 def nice_ceiling(value):
@@ -286,10 +282,6 @@ def render_activity(weeks):
     <linearGradient id="stroke" gradientUnits="userSpaceOnUse" x1="{x0}" x2="{x1}" y1="0" y2="0">
       <stop offset="0" stop-color="{CYAN}"/><stop offset="1" stop-color="{MAGENTA}"/></linearGradient>
     """
-    style = """
-    @keyframes draw{from{stroke-dashoffset:2400}to{stroke-dashoffset:0}}
-    .ln{stroke-dasharray:2400;animation:draw 2.2s ease-out both}
-    """
     body = title("ACTIVITY")
     for frac in (0, .5, 1):
         gy = y1 - frac * (y1 - y0)
@@ -301,7 +293,7 @@ def render_activity(weeks):
         )
     body += f'<path d="{area}" fill="url(#fill)"/>'
     body += (
-        f'<path class="ln" d="{path}" fill="none" stroke="url(#stroke)" stroke-width="2.5" '
+        f'<path d="{path}" fill="none" stroke="url(#stroke)" stroke-width="2.5" '
         f'stroke-linejoin="round" filter="url(#glow)"/>'
     )
 
@@ -326,7 +318,7 @@ def render_activity(weeks):
                     f'class="dim">{MONTHS[month]}</text>'
                 )
                 last_x = px[i]
-    return svg(WIDTH, h, body, style, defs)
+    return svg(WIDTH, h, body, extra_defs=defs)
 
 
 def write(name, content):
