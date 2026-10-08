@@ -33,5 +33,5 @@ text{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",mo
 <text x="48" y="52" font-size="13" class="dim">// github.com/perun-dev</text>
 <text x="51" y="123" font-size="64" class="b" fill="#ff2bd6" opacity=".75">perun-dev</text>
 <text x="48" y="120" font-size="64" class="b" fill="#00f0ff" filter="url(#glow)">perun-dev<tspan class="cur" fill="#ff2bd6">_</tspan></text>
-<text x="48" y="162" font-size="18"><tspan fill="#ff2bd6">&gt;</tspan><tspan class="txt"> typescript · python · swift · kotlin</tspan></text>
+<text x="48" y="162" font-size="18"><tspan fill="#ff2bd6">&gt;</tspan><tspan class="txt"> swift · typescript · python · kotlin</tspan></text>
 </svg>
